@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+       <head>
+              <title>Mindustry · 像素工厂 — 自动化塔防 RTS</title>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+              <meta name="description" content="Mindustry - 一款融合了塔防、工厂建造和 RTS 的沙盒策略游戏">
+              <link href="styles.css" rel="stylesheet" type="text/css">
+              <script src="soundmanager2-setup.js"></script>
+  			  <script src="soundmanager2-jsmin.js"></script>
+       </head>
+
+       <body onkeydown="preventUseOfDefaultKeys(event);" oncontextmenu="return false;">
+
+              <!-- 加载遮罩层 -->
+              <div id="loading-overlay">
+                     <div class="loader-logo">MINDUSTRY</div>
+                     <div class="loader-subtitle">LOADING ASSETS…</div>
+                     <div class="loader-bar"></div>
+              </div>
+
+              <!-- 游戏容器 -->
+              <div align="center" id="embed-html"></div>
+              <script type="text/javascript" src="html/html.nocache.js"></script>
+
+              <!-- 底部控制提示 -->
+              <div id="game-hint">🖱️ 左键放置 · 右键拆除 · WASD 移动视角 · 空格暂停</div>
+
+       </body>
+       <script>
+              var keys = [27, 38, 37, 39, 40, 17, 9];
+
+              function handleMouseDown(evt) {
+                evt.preventDefault();
+                evt.stopPropagation();
+                window.focus();
+              }
+
+              function handleMouseUp(evt) {
+                evt.preventDefault();
+                evt.stopPropagation();
+              }
+
+              function preventUseOfDefaultKeys(event) {
+                 if (keys.indexOf(event.keyCode) != -1 || event.ctrlKey){
+                    event.preventDefault();
+                 }
+              }
+
+              // 绑定事件
+              document.getElementById('embed-html').addEventListener('mousedown', handleMouseDown, false);
+              document.getElementById('embed-html').addEventListener('mouseup', handleMouseUp, false);
+
+              // 加载完成淡出遮罩层
+              setTimeout(function() {
+                    var overlay = document.getElementById('loading-overlay');
+                    if (overlay) {
+                          overlay.classList.add('fade-out');
+                          setTimeout(function() { overlay.style.display = 'none'; }, 800);
+                    }
+                    var hint = document.getElementById('game-hint');
+                    if (hint) hint.classList.add('show');
+                    setTimeout(function() { hint.classList.remove('show'); }, 5000);
+              }, 3000);
+
+              // 允许点击快速跳过加载
+              document.addEventListener('click', function() {
+                    var overlay = document.getElementById('loading-overlay');
+                    if (overlay && !overlay.classList.contains('fade-out')) {
+                          overlay.classList.add('fade-out');
+                          setTimeout(function() { overlay.style.display = 'none'; }, 800);
+                    }
+              }, { once: true });
+
+              // 全屏支持
+              function toggleFullscreen() {
+                    if (!document.fullscreenElement) {
+                          document.documentElement.requestFullscreen().catch(function(){});
+                    } else {
+                          document.exitFullscreen().catch(function(){});
+                    }
+              }
+
+              document.addEventListener('keydown', function(e) {
+                    if (e.key === 'f' || e.key === 'F') {
+                          toggleFullscreen();
+                    }
+              });
+       </script>
+</html>

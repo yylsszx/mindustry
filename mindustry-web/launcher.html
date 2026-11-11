@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+       <title>Mindustry Web · 像素工厂 网页版</title>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <style>
+              * { margin: 0; padding: 0; box-sizing: border-box; }
+              html, body { width: 100%; height: 100%; overflow: hidden; }
+
+              body {
+                    font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                    background: #0a0a0f;
+                    color: #e0e0e0;
+                    display: flex;
+                    flex-direction: column;
+                    min-height: 100vh;
+                    /* 粒子背景 */
+                    background-image:
+                          radial-gradient(2px 2px at 20% 30%, rgba(244, 186, 110, 0.3), transparent),
+                          radial-gradient(1px 1px at 60% 70%, rgba(116, 185, 255, 0.4), transparent),
+                          radial-gradient(1.5px 1.5px at 80% 20%, rgba(255, 120, 120, 0.3), transparent),
+                          radial-gradient(1px 1px at 40% 80%, rgba(200, 255, 150, 0.3), transparent),
+                          linear-gradient(180deg, #0a0a0f 0%, #12121a 100%);
+                    background-size: 800px 800px, 600px 600px, 400px 400px, 700px 700px, 100% 100%;
+                    animation: bg-shift 30s linear infinite;
+              }
+
+              @keyframes bg-shift {
+                    0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
+                    100% { background-position: 800px 800px, -600px 600px, 400px -400px, -700px -700px, 0 0; }
+              }
+
+              /* Header */
+              header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 24px 40px;
+                    position: relative;
+                    z-index: 10;
+              }
+
+              .brand {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+              }
+
+              .brand-logo {
+                    width: 40px;
+                    height: 40px;
+                    background: linear-gradient(135deg, #f4ba6e, #d29d58);
+                    border-radius: 8px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: 900;
+                    color: #1a1a2e;
+                    font-size: 20px;
+                    box-shadow: 0 0 20px rgba(244, 186, 110, 0.3);
+              }
+
+              .brand-name {
+                    font-size: 18px;
+                    font-weight: 700;
+                    color: #f4ba6e;
+                    letter-spacing: 1px;
+              }
+
+              nav {
+                    display: flex;
+                    gap: 20px;
+              }
+
+              nav a {
+                    color: #888;
+                    text-decoration: none;
+                    font-size: 14px;
+                    transition: color 0.2s;
+              }
+
+              nav a:hover {
+                    color: #f4ba6e;
+              }
+
+              /* Main */
+              main {
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    text-align: center;
+                    padding: 40px 20px;
+                    position: relative;
+                    z-index: 10;
+              }
+
+              .hero-badge {
+                    display: inline-block;
+                    padding: 6px 14px;
+                    background: rgba(244, 186, 110, 0.1);
+                    border: 1px solid rgba(244, 186, 110, 0.3);
+                    border-radius: 20px;
+                    font-size: 12px;
+                    color: #f4ba6e;
+                    margin-bottom: 24px;
+                    letter-spacing: 2px;
+                    text-transform: uppercase;
+              }
+
+              h1 {
+                    font-size: clamp(36px, 8vw, 72px);
+                    font-weight: 900;
+                    background: linear-gradient(135deg, #fff 0%, #f4ba6e 50%, #d29d58 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    margin-bottom: 16px;
+                    line-height: 1.1;
+              }
+
+              .subtitle {
+                    font-size: clamp(16px, 2.5vw, 20px);
+                    color: #888;
+                    max-width: 600px;
+                    margin-bottom: 40px;
+                    line-height: 1.6;
+              }
+
+              .cta-buttons {
+                    display: flex;
+                    gap: 16px;
+                    flex-wrap: wrap;
+                    justify-content: center;
+                    margin-bottom: 48px;
+              }
+
+              .btn {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 10px;
+                    padding: 14px 32px;
+                    border-radius: 12px;
+                    text-decoration: none;
+                    font-weight: 600;
+                    font-size: 15px;
+                    transition: transform 0.2s, box-shadow 0.2s;
+                    cursor: pointer;
+                    border: none;
+              }
+
+              .btn-primary {
+                    background: linear-gradient(135deg, #f4ba6e, #d29d58);
+                    color: #1a1a2e;
+                    box-shadow: 0 4px 20px rgba(244, 186, 110, 0.3);
+              }
+
+              .btn-primary:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 30px rgba(244, 186, 110, 0.5);
+              }
+
+              .btn-secondary {
+                    background: rgba(255, 255, 255, 0.05);
+                    color: #e0e0e0;
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+              }
+
+              .btn-secondary:hover {
+                    transform: translateY(-2px);
+                    background: rgba(255, 255, 255, 0.1);
+              }
+
+              .btn svg {
+                    width: 18px;
+                    height: 18px;
+              }
+
+              /* Features */
+              .features {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 20px;
+                    max-width: 800px;
+                    width: 100%;
+              }
+
+              .feature {
+                    background: rgba(255, 255, 255, 0.03);
+                    border: 1px solid rgba(255, 255, 255, 0.08);
+                    border-radius: 12px;
+                    padding: 20px;
+                    text-align: left;
+                    transition: transform 0.2s, border-color 0.2s;
+              }
+
+              .feature:hover {
+                    transform: translateY(-4px);
+                    border-color: rgba(244, 186, 110, 0.3);
+              }
+
+              .feature-icon {
+                    font-size: 28px;
+                    margin-bottom: 12px;
+              }
+
+              .feature h3 {
+                    font-size: 15px;
+                    color: #f4ba6e;
+                    margin-bottom: 6px;
+              }
+
+              .feature p {
+                    font-size: 13px;
+                    color: #666;
+                    line-height: 1.5;
+              }
+
+              /* Footer */
+              footer {
+                    padding: 20px 40px;
+                    text-align: center;
+                    font-size: 12px;
+                    color: #444;
+                    border-top: 1px solid rgba(255, 255, 255, 0.05);
+                    position: relative;
+                    z-index: 10;
+              }
+
+              footer a {
+                    color: #666;
+                    text-decoration: none;
+              }
+
+              footer a:hover {
+                    color: #f4ba6e;
+              }
+
+              /* Canvas Grid Decoration */
+              .grid-bg {
+                    position: absolute;
+                    top: 0; left: 0;
+                    width: 100%; height: 100%;
+                    background-image:
+                          linear-gradient(rgba(244, 186, 110, 0.03) 1px, transparent 1px),
+                          linear-gradient(90deg, rgba(244, 186, 110, 0.03) 1px, transparent 1px);
+                    background-size: 40px 40px;
+                    pointer-events: none;
+                    z-index: 1;
+              }
+
+              @media (max-width: 600px) {
+                    header { padding: 16px 20px; }
+                    nav { display: none; }
+                    .features { grid-template-columns: 1fr; }
+              }
+       </style>
+</head>
+<body>
+
+       <!-- 背景网格装饰 -->
+       <div class="grid-bg"></div>
+
+       <!-- Header -->
+       <header>
+              <div class="brand">
+                     <div class="brand-logo">M</div>
+                     <span class="brand-name">MINDUSTRY WEB</span>
+              </div>
+              <nav>
+                     <a href="index.html">🎮 开始游戏</a>
+                     <a href="#features">✨ 特性</a>
+                     <a href="https://github.com/Anuken/Mindustry-Classic" target="_blank">📖 源码</a>
+              </nav>
+       </header>
+
+       <!-- Main -->
+       <main>
+              <div class="hero-badge">⚡ 网页版 · HTML5</div>
+
+              <h1>像素工厂<br>Mindustry Web</h1>
+
+              <p class="subtitle">
+                    融合了塔防、工厂建造和 RTS 的沙盒策略游戏。
+                    建造精密的传送带供应链，保护你的基地抵御一波又一波的敌人。
+              </p>
+
+              <div class="cta-buttons">
+                     <a class="btn btn-primary" href="index.html">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                            开始游戏
+                     </a>
+                     <a class="btn btn-secondary" href="#features">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-6h2v6zm0-8h-2V7h2v4z"/></svg>
+                            了解更多
+                     </a>
+              </div>
+
+              <!-- Features -->
+              <div class="features" id="features">
+                     <div class="feature">
+                            <div class="feature-icon">🏭</div>
+                            <h3>自动化供应链</h3>
+                            <p>设计精密的传送带网络，将原材料加工成高级物品。</p>
+                     </div>
+                     <div class="feature">
+                            <div class="feature-icon">🛡️</div>
+                            <h3>策略塔防</h3>
+                            <p>用多种炮塔和防御工事保护你的核心基地。</p>
+                     </div>
+                     <div class="feature">
+                            <div class="feature-icon">🗺️</div>
+                            <h3>多地图支持</h3>
+                            <p>24 张内置地图，还有地图编辑器创建自定义关卡。</p>
+                     </div>
+                     <div class="feature">
+                            <div class="feature-icon">🌐</div>
+                            <h3>跨平台</h3>
+                            <p>现在可以直接在浏览器中体验完整的游戏内容。</p>
+                     </div>
+              </div>
+       </main>
+
+       <!-- Footer -->
+       <footer>
+              <p>基于 <a href="https://github.com/Anuken/Mindustry-Classic" target="_blank">Mindustry Classic</a> 开源项目 · 保留所有权利给原作者 Anuke</p>
+              <p style="margin-top: 6px;">按 <code>F</code> 进入全屏 · <code>ESC</code> 暂停</p>
+       </footer>
+
+</body>
+</html>
